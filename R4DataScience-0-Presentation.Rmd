@@ -1,0 +1,162 @@
+---
+title: "Data Management, Programming and Graphics with the R language"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+
+footer: "R for Data Science"
+
+---
+
+```{r setLicense, child = 'license.Rmd'}
+```
+
+# Introduction
+
+## Outline
+
+- Introduction
+    + Who are we ("we"=teachers & students)
+    + Why are we here (Why learn R?) 
+    +     - Objectives and competences
+    +     - Course contents
+- How will we proceed: Methodology
+- HW Data Science approach to using R
+- References & Resources
+
+- A first contact with R & Rstudio
+
+
+
+## Who are we (1): The Statistics and Bioinformatics Unit
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/ueb-Unit.jpg}
+\end{figure}
+
+## Who are we (2): Teachers
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/ueb-People.jpg}
+\end{figure}
+
+## Who are we (3): The GRBio Research group
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/GRBio.jpg}
+\end{figure}
+
+## Why learn R
+
+- Most people in most jobs have to _manage_ information in their every day work.
+- "Managing" may mean different things such as: 
+    + _retrieving_
+    + _manipulating_
+    + _visualizing_
+    + _analyzing_
+    + _reporting_
+    
+- R is a powerful tool that can be used to facilitate, improve or automate tasks such as those described above.
+
+## Hadley Wickam's approach to learning and applying Data Sciendce
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/data-science.png}
+\end{figure}
+
+
+## Your turn
+
+- Provide examples of informations you may wish to manage
+- Describe briefly 
+    + what this information is about
+    + how it is stored
+    + what you may wish to do with it
+        - Transformations
+        - Computations
+        - Reports
+
+## How we will work
+
+- Mastering R requires as many other disciplines
+    (i) Time 
+    (ii) Study, and 
+    (iii) Practice.
+    
+- Our lectures will have the following structure (all but the first)
+
+    + 1st part: Discuss the work you have done during the week
+    + 2nd part: We introduce a few new ideas
+    + 3rd part: Practice exercises and start working on the case study suggested/your data.
+    
+# A first contact with R, Rstudio and the `tidyverse`
+
+## [What is R?](https://www.r-project.org/about.html)
+
+- R is a _language and environment_ for statistical computing and graphics.
+
+- R provides a wide variety of statistical and graphical techniques, and is highly extensible.
+
+
+- It compiles and runs on a wide variety of UNIX platforms and similar systems Windows and MacOS.
+
+## R PRO's (why you are here!)
+
+- The system is 
+    + free (as in _free beer_)
+    + It's platform independent
+    + It is constantly improving (2 new versions/year)
+    
+- It is a statistical tool
+    + Implements almost every statistical method that exists
+    + Great graphics (Examples)
+    + Simple reporting tools
+    + Also state-of-the-art in Bioinformatics through the [Bioconductor Project](http://bioconductor.org).
+
+- Programming language
+    + Easy to automate repetitive tasks (Example_1.1)
+    + Possibility to create user friendly web interfaces  with a moderate effort. (Examples)
+    
+## R CON's
+
+- R is mainly used issuing commands from a console
+    + less user friendly that almost any other statistical tool you may know.
+    
+- Constantly having new versions may affect our projects
+
+- Not necessarily the best language nor suitable for every existing task
+
+## Using R
+
+- Traditionally R was used from an Operating System console ("Terminal")
+
+- This is an intimidating approach for many users
+
+- A variety of options exist to decrease the learning curve.
+
+    + Use a supportive development environment such as **Rstudio**
+    + Use an interface to Statistical tools, such as **Rcommander** or ::DeduceR** allowing to concetrate an Statistics, not in commands.
+    
+## A raw R console in linux
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RConsole.png}
+\end{figure}
+
+## An "enhanced" console: Rstudio
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RStudio.png}
+\end{figure}
+
+## Another thing for doing Statistics with R: Rcommander
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RCommander.png}
+\end{figure}
+

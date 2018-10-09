@@ -1,0 +1,16 @@
+
+## Readme
+
+- License:
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+http://creativecommons.org/licenses/by-nc-sa/4.0/
+
+- You are free to:
+    + **Share** : copy and redistribute the material
+    + **Adapt** : rebuild and transform the material
+
+- Under the following conditions:
+    + **Attribution** : You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+    + **NonCommercial** : You may not use this work for commercial purposes.
+    + **Share Alike** : If you remix, transform, or build upon this work, you must distribute your contributions under the same license to this one.
+    

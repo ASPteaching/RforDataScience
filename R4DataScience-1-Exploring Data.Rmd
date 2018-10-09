@@ -1,0 +1,203 @@
+---
+title: "R for Data Science (I): Exploration"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+footer: "R for Data Science"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setLicense, child = 'license.Rmd'}
+```
+
+## Outline: Data Exploration
+
+- The Data Science Approach in R
+- Data Visualization
+- Data Transformation
+- Exploratory Data Analysis
+
+## Recall: The Data Science Approach in R 
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/data-science.png}
+\end{figure}
+
+# Data Visualization
+
+## Introduction
+
+> "The simple graph has brought more information to the data analyst’s mind than any other device.” 
+>
+> `r tufte::quote_footer('--- John Tukey')`
+
+\bigskip
+
+We consider three components of visualization:
+
+1. Aesthetics
+
+2. Facetting
+
+3. Geoms
+
+# Aesthetic mappings
+
+## The `mpg` dataset
+
+```{r}
+library(ggplot2)
+# ?mpg
+head(mpg)
+str(mpg)
+summary(mpg)
+```
+
+## Scatterplot basics
+
+```{r out.width='70%'}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+## Additional information
+
+- Plots can be enhanced by displaying additional information
+
+- **aesthetics** displays it using distinct shapes, colors or sizes.
+
+- **faceting** breaks displays into multiple smaller displays for different subsets.
+
+## Improving plots
+
+For better plot "add" the information to the call
+
+```{r eval=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy,
+                           color = class))
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy,
+                           alpha = class))
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy,
+                           shape = class))
+```
+
+## Your turn now
+
+- Experiment with colour, size, and shape
+aesthetics.
+
+- What’s the difference between discrete or
+continuous variables?
+
+- What happens when you combine
+multiple aesthetics?
+
+## In summary
+
+|        | Discrete             | Continuous                                |   |
+|--------|----------------------|-------------------------------------------|---|
+| Colour | Rainbow              | Gradient                                  |   |
+| Size   | Disrete size steps   | Linear mapping  radius-value |   |
+| Shape  | Different shape each | Doesn't work                              |
+
+# Facets
+
+## Faceting
+
+- Break the visualization in many small plots - 
+- Each (sub)plot reflects one of multiple conditions defined by one or more (categorical) variables.
+- Useful for exploring conditional relationships or for when there are many data.
+
+## `facet_wrap`: split plots by one variable  
+
+```{r eval=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) 
++ facet_wrap(~ class, nrow = 2)
+```
+
+```{r out.width='70%', echo=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + facet_wrap(~ class, nrow = 2)
+```
+
+## `facet_grid`: split plots by two variables
+
+```{r eval=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) 
++ facet_grid(drv ~ cyl)
+```
+
+```{r out.width='70%', echo=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(drv ~ cyl)
+```
+
+## Your turn
+
+```{r eval=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) 
++ facet_grid(. ~ cyl)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) 
++ facet_grid(drv ~ .)
+```
+
+# Geometric Objects "Geoms"
+
+## What are "geom"
+
+- A `geom` is the geometrical object that a plot uses to represent data. 
+
+- For example, 
+
+    + Bar charts use bar geoms, 
+    + Line charts use line geoms, 
+    + Boxplots use boxplot geoms
+    + Scatterplots use the point geom !
+
+## Applying `geoms`: How are these plots similar?
+
+```{r echo = FALSE, out.height = "48%", fig.align="default", message = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+## Using `geoms`
+
+- Both plots contain the same x variable and  the same y variable, 
+- both describe the same data. 
+- Each plot uses a different visual object to represent the data. 
+- In ggplot2 syntax, we say that they use different __geoms__.
+
+## Changing `geoms`
+
+- To change the geom in your plot, change the geom function that you add to `ggplot()`
+
+```{r eval = FALSE}
+# left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+# right
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```

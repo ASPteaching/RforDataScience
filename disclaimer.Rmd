@@ -1,0 +1,10 @@
+
+Disclaimer and acknowledgements
+===============================
+
+- These slides have been prepared based on multiple sources: websites, blogs, courses. While it is hard to cite them all I wish to acknowledge those sources that have been particularly useful.
+
+    + [Tutorial-R-web-data](https://github.com/gastonstat/tutorial-R-web-data), by Gaston Sanchez
+    + [Text Mining, Scraping and Sentiment Analysis with R](https://www.udemy.com/r-social-media-mining-scraping-with-twitter/) Udemy.
+    + [Working with Web Data in R](https://www.datacamp.com/courses/working-with-web-data-in-r) Datacamp Course
+    

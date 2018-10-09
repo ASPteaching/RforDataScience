@@ -1,0 +1,45 @@
+body {
+    background-color: #99FFFF;
+    background-image: url("images/smallLogo.png");
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin-right: 200px;
+    margin-top: 100px;
+}
+
+h1 {
+    color: black;
+    text-align: center;
+    font-size: 36px;
+}
+
+p {
+    font-family: "Arial";
+    font-size: 25px;
+}
+
+
+.small-code pre code {
+  font-size: 1em;
+}
+
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+
+.centertitle {
+<h3 style="text-align:center">
+}
+
+
+
+/* heading for slides with two hashes ## */
+.reveal .slides section .slideContent h2 {
+   font-size: 40px;
+   font-weight: bold;
+   color: green;
+}
