@@ -50,14 +50,30 @@ We consider three components of visualization:
 
 # Aesthetic mappings
 
-## The `mpg` dataset
+## Datasets in packages
+
+- Packages include example datasets
+
+- Datasets can be loaded by loading the package 
 
 ```{r}
 library(ggplot2)
-# ?mpg
+data(package="ggplot2")
+```
+
+## The `mpg` dataset
+
+- The dataset `mpg` is included in package `ggplot2`
+
+- Obtain some information about it.
+
+```{r eval =FALSE}
+
+?mpg
 head(mpg)
 str(mpg)
 summary(mpg)
+dim(mpg)
 ```
 
 ## Scatterplot basics
@@ -173,7 +189,7 @@ ggplot(data = mpg) +
 
 ## Applying `geoms`: How are these plots similar?
 
-```{r echo = FALSE, out.height = "48%", fig.align="default", message = FALSE}
+```{r echo = FALSE, out.height = "40%", fig.align="default", message = FALSE}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy))
 
