@@ -1,5 +1,5 @@
 ---
-title: "R for Data Science (I): Exploration"
+title: "R for Data Science (I): Visualization"
 author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
         Mireia Ferrer"
 date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"

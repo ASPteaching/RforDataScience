@@ -1,0 +1,143 @@
+---
+title: "1- Introduction to the R language"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+  slide_level: 2
+footer: "R for Data Science"
+
+---
+
+```{r setLicense, child = 'license.Rmd'}
+```
+
+# Introduction to R
+
+## Outline
+
+- A first contact with R & Rstudio. 
+    + How does one work with R
+- A primer of data import
+    + Reading data into R
+- A primer of communication
+    + R Notebooks and RMarkdown
+
+
+# A first contact with R, Rstudio and the `tidyverse`
+
+## [What is R?](https://www.r-project.org/about.html)
+
+- R is a _language and environment_ for statistical computing and graphics.
+
+- R provides a wide variety of statistical and graphical techniques, and is highly extensible.
+
+
+- It compiles and runs on a wide variety of UNIX platforms and similar systems Windows and MacOS.
+
+## R PRO's (why you are here!)
+
+- The system is 
+    + free (as in _free beer_)
+    + It's platform independent
+    + It is constantly improving (2 new versions/year)
+    
+- It is a statistical tool
+    + Implements almost every statistical method that exists
+    + Great graphics (Examples)
+    + Simple reporting tools
+    + Also state-of-the-art in Bioinformatics through the [Bioconductor Project](http://bioconductor.org).
+
+- Programming language
+    + Easy to automate repetitive tasks (Example_1.1)
+    + Possibility to create user friendly web interfaces  with a moderate effort. (Examples)
+    
+## R CON's
+
+- R is mainly used issuing commands from a console
+    + less user friendly that almost any other statistical tool you may know.
+    
+- Constantly having new versions may affect our projects
+
+- Not necessarily the best language nor suitable for every existing task
+
+## How is R used
+
+- Traditionally R was used from an Operating System console ("Terminal")
+
+- This is an intimidating approach for many users
+
+- A variety of options exist to decrease the learning curve.
+
+    + Use a supportive development environment such as **Rstudio**
+    + Use an interface to Statistical tools, such as **Rcommander** or ::DeduceR** allowing to concetrate an Statistics, not in commands.
+    
+## A raw R console in linux
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RConsole.png}
+\end{figure}
+
+## An "enhanced" console: Rstudio
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RStudio.png}
+\end{figure}
+
+## Something that is not a console: Rcommander
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/RCommander.png}
+\end{figure}
+
+# Using R
+
+## Commands, Objects and Functions
+
+Some explanations here
+
+## Packages and datasets
+
+Some explanations here
+
+
+## The `tidyverse`
+
+Some explanations here
+
+## Some basic data types
+
+Some explanations here
+
+
+# Getting data into R
+
+## Importing data with Rstudio
+
+Some explanations here
+
+## Reading Excel files
+
+Some explanations here
+
+## Reading text files
+
+Some explanations here
+
+## Interlude: Summarizing data
+
+Some explanations here
+
+# Dynamic output with Rmarkdown
+
+## Reproducible research with R notebooks
+
+Some explanations here
+
+## Dynamic reports with Rmarkdown
+
+Some explanations here
