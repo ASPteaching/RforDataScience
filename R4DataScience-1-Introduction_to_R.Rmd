@@ -59,7 +59,7 @@ footer: "R for Data Science"
 ## R CON's
 
 - R is mainly used issuing commands from a console
-    + less user friendly that almost any other statistical tool you may know.
+    + less user friendly than almost any other statistical tool you may know.
     
 - Constantly having new versions may affect our projects
 
@@ -98,20 +98,60 @@ footer: "R for Data Science"
 
 ## Commands, Objects and Functions
 
-Some explanations here
+- Shortly, using R consists of 
+    + Working with *objects* using *commands* and *functions*
 
-## Packages and datasets
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/basicConcepts.png}
+\end{figure}
 
-Some explanations here
+## Variables and data types
 
+- Data managed in R ...
+    + is stored as *variables*
+- Variables can be of distinct types
+    + Numerical
+        - numeric (13.7)
+        - int (3)
+    + Character
+        - "R is cute"
+    + Factors
+        - A,B,C,D
+        - WT, Mut
+        
+
+## R packages
+
+- R can be used for many different types of data processing and analysis from distinct fields, besides statistics such as Ecology, Omics Sciences, Psychology etc.
+- All these capabilities are not present from the begining because most of them will never be used by most users.
+- Instead, thay can be added when needed by 
+    (i) installing and 
+    (ii) loading the appropriate packages.
+
+## Installing and loading packages
+ 
+We want to analyze some data using cox proportional hazards model.
+```{r eval=FALSE}
+res.cox <- coxph(Surv(time, status) ~ sex, data = lung)
+```
+`Error in coxph(Surv(time, status) ~ sex, data = lung) : could not find function "coxph"`
+
+We need to install and load the package before we can use it.
+```{r eval=FALSE}
+install.packages("survival")
+library(survival)
+res.cox <- coxph(Surv(time, status) ~ sex, data = lung)
+```
 
 ## The `tidyverse`
 
-Some explanations here
-
-## Some basic data types
-
-Some explanations here
+- The tidyverse is an opinionated collection of R packages designed for data science. 
+- All packages share an underlying design philosophy, grammar, and data structures. 
+- The complete tidyverse collection can be installed with:
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+- [https://www.tidyverse.org/](https://www.tidyverse.org/)
 
 
 # Getting data into R
