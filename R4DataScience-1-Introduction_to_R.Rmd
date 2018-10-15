@@ -158,26 +158,87 @@ install.packages("tidyverse")
 
 ## Importing data with Rstudio
 
-Some explanations here
+- The easiest way to get data into R is to click on the `Ìmport Datasets` button.
+- Alternatively R code can be written using functions from `Base R` or the `tidyverse`
+    + `Base R` functions start with `read.`: `read.table`, `read.csv`
+    + `tidyverse` functions start with `read_`: `read_delim`, `read_csv` or `read_excel`
 
-## Reading Excel files
+## Reading Excel or csv files
 
-Some explanations here
+- Files can be read from any location, let it be a physical support or a web site.
+- To read files from disk be sure to indicate their location.
+- Alternatively the default working directory can be set to the folder where the file is located.
+
+- Assume files `Diabetes.xls` and `Osteoporosis.csv` have been downloaded from url \url{https://github.com/uebvhir/uebvhir.github.io/blob/master/datasets} to a sub-folder named `datasets` 
+- Start setting the default directory to the folder where you have saved the `datasets` folder.
+    + `Session --> Set Working directory --> To source file location...`
+
+- Import the `diabetes.xls` and the `osteoporosis.csv` file with the default options
+
+## Reading Excel or csv files (continued)
+
+The code generated for reading the files can be reused any time changing the file name if needed.
+
+```{r}
+# Read Excel file
+library(readxl)
+diabetes <- read_excel("datasets/diabetes.xls")
+```
+
 
 ## Reading text files
 
-Some explanations here
+- Text files may require that more information is provided about delimiters, decimal dign, locale (language) or page encoding (UTFB for Mac or Linux vs ISO-8859-1 for Windows).
+- All options can be selected from the rstudio importer
+
+```{r message=FALSE}
+# Read csv file
+library(readr)
+osteoporosis <- read_delim("datasets/osteoporosis.csv", 
+     "\t", escape_double = FALSE, locale = locale(date_names = "es", 
+     decimal_mark = ",", encoding = "ISO-8859-1"), 
+     trim_ws = TRUE)
+```
 
 ## Interlude: Summarizing data
 
-Some explanations here
+- Once a dataset is available it is easy to "have a look at it"
+
+```{r eval=FALSE}
+head(diabetes)
+str(diabetes)
+summary (diabetes)
+```
+
 
 # Dynamic output with Rmarkdown
 
 ## Reproducible research with R notebooks
 
-Some explanations here
+- R and Rstudio are strongly involved in promoting [reproducibility](https://en.wikipedia.org/wiki/Reproducibility) and [reproducible research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research).
+- This is implemented in **R notebooks**
+- A notebook combines
+    + Natural language text, e.g. describing what we are doing in our own words.
+    + R code with the instructions needed to do the data management or the analysis.
+    + The output of the analysis
 
-## Dynamic reports with Rmarkdown
+## Creating Notebooks
 
-Some explanations here
+- A notebook can be created in Rstudio with 
+    + `File --> New File --> R Notebook`
+- The notebook contains example text and code so it is straightforwoard to adapt it to your analysis.
+- To produce an html file with text, code and output:
+    - Press the button "Preview"
+    - Or Select "Knitr to Html"
+
+
+# Your turn
+
+## Exercise
+
+- Select a dataset with which you wish to work along the course.
+- Read it into R
+    + How many variables are there in it
+    + What are their types
+- Try to summarize it briefly
+- Create an R notebook to encapsulate all your steps and share it with somebody.
