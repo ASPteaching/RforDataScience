@@ -312,7 +312,7 @@ p5 <- ggplot(housing, aes(x = Date, y = Home.Value))
 ## Housing prices by states (2)
 
 
-```{r echo=FALSE, fig.height=4}
+```{r echo=FALSE, fig.height=6}
 p5 <- ggplot(housing, aes(x = Date, y = Home.Value))
 (p5 <- p5 + geom_line() +
    facet_wrap(~State, ncol = 10))
