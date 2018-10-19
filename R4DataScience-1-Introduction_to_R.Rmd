@@ -27,9 +27,6 @@ footer: "R for Data Science"
 - A primer of communication
     + R Notebooks and RMarkdown
 
-
-# A first contact with R, Rstudio and the `tidyverse`
-
 ## [What is R?](https://www.r-project.org/about.html)
 
 - R is a _language and environment_ for statistical computing and graphics.
@@ -210,7 +207,6 @@ str(diabetes)
 summary (diabetes)
 ```
 
-
 # Dynamic output with Rmarkdown
 
 ## Reproducible research with R notebooks
@@ -231,8 +227,17 @@ summary (diabetes)
     - Press the button "Preview"
     - Or Select "Knitr to Html"
 
+# Resources and exercises
 
-# Your turn
+## Introductory materials
+
+The web is full of all types of materials about R
+
+Below there are a couple of brief introductions:
+
+- [A short introduction to R]( https://stats.idre.ucla.edu/r/seminars/short-introduction-to-r/)
+
+- [Getting started with R](https://github.com/saghirb/Getting-Started-in-R)
 
 ## Exercise
 
