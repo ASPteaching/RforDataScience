@@ -105,7 +105,8 @@ dim(diabetesF)
 ## Example 1. Build the plot
 ```{r fig.height=4}
 library(ggplot2)
-ggplot(diabetes)+geom_point(aes(x=edat,y=sbp))
+ggplot(diabetes)+
+  geom_point(aes(x=edat,y=sbp))
 ```
 
 ## Variations on the theme
@@ -113,11 +114,13 @@ ggplot(diabetes)+geom_point(aes(x=edat,y=sbp))
 - Calls to ggplot can be combined differently
 
 ```{r eval=FALSE}
-ggplot(data=diabetes,aes(x=edat,y=sbp))+geom_point()
+ggplot(data=diabetes,aes(x=edat,y=sbp))+
+  geom_point()
 ```
 or 
 ```{r eval=FALSE}
-ggplot()+geom_point(data=diabetes,aes(x=edat,y=sbp))
+ggplot()+
+  geom_point(data=diabetes,aes(x=edat,y=sbp))
 ```
 
 ## Aesthetics
@@ -138,23 +141,27 @@ we can see*, that is, visual properties of an object.
 ## Example 2: Aesthetics
 
 ```{r fig.height=2}
-ggplot(diabetes)+geom_bar(aes(x=as.factor(ecg)))
+ggplot(diabetes)+
+  geom_bar(aes(x=as.factor(ecg)))
 ```
 ```{r fig.height=2}
-ggplot(diabetes)+geom_histogram(aes(x=bmi),bins=10)
+ggplot(diabetes)+
+  geom_histogram(aes(x=bmi),bins=10)
 
 ```
 
 ## Distinguishing between groups using `aes()` (1)
 
 ```{r fig.height=4}
-ggplot(diabetes)+geom_point(aes(x=edat,y=sbp, col=tabac))
+ggplot(diabetes)+
+  geom_point(aes(x=edat,y=sbp, col=tabac))
 ```
 
 ## Distinguishing between groups using `aes()` (2)
 
 ```{r fig.height=4}
-ggplot(diabetes)+geom_point(aes(x=edat,y=sbp, col=tabac, shape=chd))
+ggplot(diabetes)+
+  geom_point(aes(x=edat,y=sbp, col=tabac, shape=chd))
 ```
 
 ## `aes` properties that do not depend on variables
@@ -162,11 +169,13 @@ ggplot(diabetes)+geom_point(aes(x=edat,y=sbp, col=tabac, shape=chd))
 Notice the difference between these plots.
 
 ```{r fig.height=2}
-ggplot(diabetes)+geom_point(aes(x=edat, y=sbp), col='red')
+ggplot(diabetes)+ 
+  geom_point(aes(x=edat, y=sbp), col='red')
 ```
 
 ```{r fig.height=2}
-ggplot(diabetes)+geom_point(aes(x=edat, y=sbp, col='red'))
+ggplot(diabetes)+
+  geom_point(aes(x=edat, y=sbp, col='red'))
 ```
 
 # Geometric Objects
@@ -197,8 +206,10 @@ ggplot(diabetes)+geom_point(aes(x=edat, y=sbp, col='red'))
 ## Do not forget boxplots!
 
 ```{r, fig.height=4}
-(p<- ggplot(diabetes, aes(x=chd, y=tempsviu)) +   geom_boxplot())
-(p<- p+ ggtitle("Relation between temps viu and chardiac disease"))
+(p<- ggplot(diabetes, aes(x=chd, y=tempsviu)) +   
+   geom_boxplot())
+(p<- p+ 
+    ggtitle("Relation between temps viu and chardiac disease"))
 ```
 
 ## Adding labels to your plot
@@ -207,7 +218,9 @@ ggplot(diabetes)+geom_point(aes(x=edat, y=sbp, col='red'))
 - An alternative is using `geom_label`
 
 ```{r fig.height=3}
-ggplot(diabetesF, aes(x=edat, y=sbp))+ geom_point() + geom_text(aes(label=chd), size = 3)
+ggplot(diabetesF, aes(x=edat, y=sbp))+ 
+  geom_point() + 
+  geom_text(aes(label=chd), size = 3)
 ```
 
 ## ggplot extensions: the `ggrepel` package
@@ -227,7 +240,9 @@ ggplot(diabetesF, aes(x=edat, y=sbp))+ geom_point() +
 
 ```{r echo=FALSE, fig.height=4}
 require(ggrepel)
-ggplot(diabetesF, aes(x=edat, y=sbp))+ geom_point() + geom_label_repel(aes(label=chd), size = 3)
+ggplot(diabetesF, aes(x=edat, y=sbp))+
+  geom_point() + 
+  geom_label_repel(aes(label=chd), size = 3)
 ```
 
 
