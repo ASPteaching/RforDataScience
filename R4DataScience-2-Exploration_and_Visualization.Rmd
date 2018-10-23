@@ -403,7 +403,7 @@ p<- ggplot(housing, aes(x = Home.Value))
 Use the dataset from "The Economist" available from the course page to draw the plot from the figure below:}
 
 \begin{figure}
-\includegraphics[width=0.85\linewidth]{images/econScatter10.png}
+\includegraphics[width=0.95\linewidth]{images/econScatter10.png}
 \end{figure}
 
 
