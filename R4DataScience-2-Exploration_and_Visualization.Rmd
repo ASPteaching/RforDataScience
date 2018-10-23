@@ -14,6 +14,12 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r  include=FALSE}
+require(knitr)
+opts_chunk$set(
+concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=4)
+```
+
 ```{r setLicense, child = 'license.Rmd'}
 ```
 
@@ -378,12 +384,27 @@ p<- ggplot(housing, aes(x = Home.Value))
 
 ## That's (not) all
 
-- There are other things you can do with your plots.
+- There are many other things you can do with your plots.
 
-- Start trying what we have done with your data or check the final exercise in this workshop:
-
-    + [A workshop on R graphics with ggplot2](https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html)
+- An easy way to learn is adapting other people's plots. 
+      + You can go to [R graphs gallery](https://www.r-graph-gallery.com/) which has a 
+      + [specific section on `ggplot2`](https://www.r-graph-gallery.com/portfolio/ggplot2-package/) 
+  
+  and start adapting some of their plots to your needs.
 
 - And do not forget the cheatsheet!:
 
     + [ggplot2-cheatsheet-2.1-Spanish.pdf](https://www.rstudio.com/wp-content/uploads/2016/12/ggplot2-cheatsheet-2.1-Spanish.pdf)
+    
+# Your turn
+
+## 
+\tiny{
+Use the dataset from "The Economist" available from the course page to draw the plot from the figure below:}
+
+\begin{figure}
+\includegraphics[width=0.85\linewidth]{images/econScatter10.png}
+\end{figure}
+
+
+
