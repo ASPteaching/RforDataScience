@@ -1,0 +1,390 @@
+---
+title: "R for Data Science (III): Data Managment"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+
+footer: "R for Data Science"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r  include=FALSE}
+require(knitr)
+opts_chunk$set(
+concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=4, size = "footnotesize")
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+```{r setLicense, child = 'license.Rmd', eval =F}
+```
+
+## Outline: Data Exploration*
+
+\vspace{2cm}
+
+- Data managements with dplyr
+- Merging datasets
+- Spreading and gathering
+- The pipe operator %>%
+
+\vspace{2.5cm}
+
+\tiny *Based on this presentation: [*Data Managment, UCLA*](https://stats.idre.ucla.edu/stat/data/rdm/data_management_seminar.html#153).
+
+## Data Management packages
+**tidyverse:** a collection of packages with tools for most aspects of data analysis, particularly strong in data import, management, and visualization. Packages within tidyverse:
+
+- **dplyr** - subsetting, sorting, transforming variables, grouping
+- **tidyr** - restructuring rows and columns
+- **magrittr** - piping a chain of commands
+- **stringr** - string variable manipulation
+
+<!-- **Hmisc**: another large collection of tools for most aspects of data analysis, but we use it here for describe(), a dataset summary function -->
+
+```{r}
+# install.packages("tidyverse", dependencies = TRUE)
+library(tidyverse)
+```
+
+
+## Example dataset
+\begin{figure}
+\includegraphics[width=.9\linewidth]{images/dataset.png}
+\end{figure}
+
+
+# Data managements with dplyr
+
+
+## The dplyr package
+The **dplyr** package provides tools for some of the most common data management tasks. Its primary functions are "verbs" to help you think about what you need to do to your dataset:
+
+- **filter()**: select rows according to conditions
+- **select()**: select columns (you can rename as you select)
+- **arrange()**: sort rows
+- **mutate()**: add new columns
+
+The **dplyr** package is automatically loaded with **library(tidyverse)**.
+
+
+## Selecting rows with filter
+
+The dplyr function filter() provides a cleaner syntax for subsetting datasets. Conditions separated by , are joined by & (logical AND).
+
+```{r, size="footnotesize"}
+require(readxl)
+diab <- read_excel("datasets/diabetes.xls")
+diab_filt <- filter(diab, tabac == "No fumador", edat >= 50)
+head(diab_filt, n = 4)
+```
+
+
+## Selecting columns with select
+Use dplyr function select() to keep only the variables you need.
+
+```{r}
+diab_small <- select(diab, mort, edat, tabac, sbp)
+head(diab_small, n = 4)
+```
+
+## Sorting rows with arrange
+
+Sort the order of rows by variable values using **arrange()** from dplyr.
+
+Be default, ascending order will be used. Surround a sorting variable with **desc()** to sort by descending order instead.
+
+```{r}
+# sort, with males before 'vivo', then by age, youngest first
+diab_sort <- arrange(diab, desc(mort), edat) 
+head(diab_sort, n = 4)
+```
+
+
+## R Logical operators and functions
+Here are some operators and functions to help with selection:
+
+
+* **==**: equality
+* **$>, >=$**: greater than, greater than or equal to
+* **!**: not
+* **&**: AND
+* **|**: OR
+* **%in%**: matches any of (2 %in% c(1,2,3) = TRUE)
+* **is.na()**: equality to NA
+* **near()**: checking for equality for floating point (decimal) numbers, has a built-in tolerance
+
+
+
+## Transforming variables into new variables
+
+The function **mutate()** allows us to transform many variables in one step without having to respecify the data frame name over and over.
+
+Useful R functions for transforming:
+
+* **log()**: logarithm
+* **min_rank()**: rank values
+* **cut()**: cut a continuous variable into intervals with new integer value signifying into which interval original value falls
+* **scale()**: standardizes variable (substracts mean and divides by standard deviation)
+* **cumsum()**: cumulative sum
+* **rowMeans(), rowSums()**: means and sums of several columns
+
+
+## Example: mutate()
+create age category variable, and highbmi binary variable
+```{r, size="tiny"}
+diab_mut <- mutate(diab,
+            edatcat = cut(edat, breaks = c(40,50,60,70,120)),
+            highbmi = bmi > mean(bmi))
+head(diab_mut, n = 4)
+```
+
+```{r, eval = FALSE}
+table(diab_mut$edatcat, diab_mut$highbmi)
+```
+
+
+## EXERCISE
+1. Find all individual that: 
+
+    1.1 Had a sbp higher than 160 (**filter()**)
+    
+    1.2 Had a sbp higher than 160 or tabac was 'Fumador'
+
+2. What happens if you include the name of a variable multiple times in a **select()** call?
+
+3. Sort individual to find the most 'tempsviu'. (**arrange() **)
+
+
+```{r, eval = F, echo = F}
+filter(diab,sbp > 160)
+filter(diab,sbp > 160 | tabac == "Fumador")
+
+select(diab, edat,bmi,sbp,sbp)
+
+arrange(diab, desc(tempsviu))
+```
+
+
+
+# The pipe operator %>%
+
+## The pipe operator %>%
+A data management task may involve many steps to reach the final desired dataset. Often, during intermediate steps, datasets are generated that we don't care about or plan on keeping. For these multi-step tasks, the pipe operator provides a useful, time-saving and code-saving shorthand.
+
+
+Naming datasets takes time to think about and clutters code. Piping makes your code more readable by focusing on the functions used rather than the name of datasets.
+
+<!-- The pipe operator is %>%, which can be typed with CTRL-SHIFT-M. The pipe operator can be expressed as "then" when reading code. The operator is loaded with pacakage magrittr (automatically loaded with library(tidyverse)). -->
+
+
+## Using the pipe operator
+The pipe operator "pipes" the dataset on the left of the %>% operator to the function on the right of the operator.
+
+The code x %>% f(y) translates to f(x,y), that is, x is treated by default as the first argument of f(). If the function returns a data frame, we can then pipe this data frame into another function. Thus x %>% f(y) %>% g(z) translates to g(f(x,y), z).
+
+
+
+## Examples of using the pipe operator
+As a first example, perhaps we want to create a dataset of just Vivo under 40, with only the age and pain variables selected. We could do this in 2 steps, like so:
+
+```{r}
+diab40 <- filter(diab, mort == "Vivo" & edat < 40)
+diab40_small <- select(diab40, edat, dbp)
+head(diab40_small,n = 4)
+```
+
+## Examples of using the pipe operator
+While that works fine, the intermediate dataset f40 is not of interest and is cluttering up memory and the workspace unnecessarily.
+
+We could use %>% instead:
+
+```{r}
+diab40_small <- diab %>%   
+  filter(mort == "Vivo" & edat < 40) %>% 
+  select(edat, dbp)
+head(diab40_small,n = 4)
+```
+
+
+## EXERCISE
+
+Replicate the last exercice using 'pipes'
+
+```{r, eval = F}
+df <- filter(diab,sbp > 160 | tabac == "Fumador")
+
+dfs <- select(df, edat,bmi,sbp,sbp)
+
+dfsa <- arrange(dfs, desc(tempsviu))
+
+```
+
+
+```{r, eval = F, echo=F}
+diab %>% 
+  filter(sbp > 160 | tabac == "Fumador") %>% 
+  select(edat,tempsviu,bmi,sbp,sbp) %>% 
+  arrange(desc(tempsviu))
+
+```
+
+# Merging datasets
+
+## Merging datasets 
+Appending adds more rows of observations, whereas merging adds more columns of variables. Datasets to be merged should be matched on some id variable(s).
+
+\begin{figure}
+\includegraphics[width=.83\linewidth]{images/merge.png}
+\end{figure}
+
+## Data example
+
+```{r}
+band_members
+
+band_instruments
+```
+
+## Append row bind_rows()
+
+```{r}
+bind_rows(band_members, band_instruments)
+
+```
+
+##  Append columns bind_cols()
+
+```{r}
+
+bind_cols(band_members, band_instruments)
+```
+
+
+## Merging datasets with dplyr joins
+
+The **dplyr** "join" functions perform such merges and will use any same-named variables between the datasets as the id variables by default. Use the by= argument to specify specific matching id variables.
+
+These joins all return a table with all columns from x and y, but differ in how they deal with mismatched rows:
+
+- **inner_join(x, y)**: returns all rows from x where there is a matching value in y (returns only matching rows).
+
+- **left_join(x, y)**: returns all rows from x, unmatched rows in x will have NA in the columns from y. Unmatched rows in y not returned.
+
+- **full_join(x, y)**: returns all rows from x and from y; unmatched rows in either will have NA in new columns
+
+
+
+## Mutating joins
+**inner_join(x, y)**: returns all rows from x where there is a matching value in y (returns only matching rows).
+
+```{r}
+band_members %>% 
+	inner_join(band_instruments, by = "name")
+```
+
+
+## Mutating joins
+**Other joins **:  `left_join`, `right_join`, `full_join`
+
+```{r}
+band_members %>% 
+	left_join(band_instruments)
+```
+
+
+
+## EXERCISE
+
+What happens if you run these lines?
+
+
+```{r, eval = F}
+band_members %>% 
+	right_join(band_instruments)
+```
+
+```{r, eval = F}
+band_members %>% 
+	full_join(band_instruments)
+```
+
+
+# Spreading and gathering
+
+
+## Case 1: Use gather() to create a variable out of column headings and restructure the dataset
+To use gather(), we select a set of columns for reshaping:
+
+* the column headings are reshaped into column variable
+* the values in the columns are gathered and stacked into a single column
+* This process is also known as "reshaping long".
+
+Arguments to gather():
+
+* the dataset
+* **key=**: name of the new column that will hold the values of the selected column headings
+* **value=**: the name of the new column that will hold the stacked values of the selected columns
+
+
+
+## Use gather() example
+gather(key="year", value="grad", -id)
+\begin{figure}
+\includegraphics[width=.83\linewidth]{images/gather.png}
+\end{figure}
+
+## Use gather() example
+
+```{r, size="tiny"}
+dept <- read_csv("datasets/dept1.csv")
+dept_by_year <- dept %>% 
+  gather(key = "year", value = "grad", -id)
+dept_by_year
+```
+
+
+## Case 2: Multiple variables in one column, spread()
+
+Columns should contain values that represent one variable, but we often encounter datasets where multiple variables are stored in the same column.
+
+Let's take a look at a dataset of worms, who have had their age, length, and weight measured, but all stored in one column.
+
+```{r, size="tiny"}
+worms <- read_csv("datasets/worms.csv")
+head(worms, n = 6)
+```
+
+## spread() a single column into multiple columns
+The spread() function serves as the complement to gather(), spreading key-value pairs (feature-measurement pairs in our example) across columns. This process is sometimes known as "reshaping wide".
+```{r}
+by_worm <- worms %>% 
+  spread(key = feature, value = measure)
+by_worm
+```
+
+
+
+
+
+
+# Your turn
+
+## EXERCISE
+ 
+\tiny{Use the dataset from "The Economist" available from the course page to draw the plot from the figure below:}
+
+
+
+
