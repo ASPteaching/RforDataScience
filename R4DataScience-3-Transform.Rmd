@@ -383,8 +383,41 @@ by_worm
 
 ## EXERCISE
  
-\tiny{Use the dataset from "The Economist" available from the course page to draw the plot from the figure below:}
+\tiny{Use the dataset from "The Economist" available from the course page to create a database..:   }
+
+```{r, echo = F, eval = FALSE}
+eco <- read_csv("https://raw.githubusercontent.com/ASPteaching/RforDataScience/master/datasets/EconomistData.csv")
+```
 
 
+1. Flights - delay vs. time.
 
+Load the package nycflights13, which contains the on-time data flights, using the command require(nycflights13). The flights data set is about all the flights that departed from New Yord City (i.e. airports JFK, LGA or EWR) in 2013. In particular, the interest
+lies in the following variables:
+
+• hour, minute: the hour and minute of the departure
+• arr_delay: the arrival delay of the incoming plane (in minutes)
+• dest: the destination.
+
+
+Load the data set and take a look at it using the commands head() and summary().
+a) Create a new variable which encodes a given hour and minute as one decimal number, i.e. time in hours. Save this new variable as variable time in the data frame flights.
+```{r}
+flights_m <- mutate(flights, time = (hour + minute/60))
+```
+
+Cread un tibble que contenga los datos de la primera visita de las voluntarias con log(nkiller) > 4. Las variables del tibble deben ser las de `entelong` excepto `cd4` y `cd8`. Realizar el ejercicio usando 'pipes' y sin ellos 
+
+```{r}
+load("DatosENTE.RData")
+comment(entelong)
+womenV1 <- select(filter(entelong, sex == "Female", visit == 1, log(nkiller) > 4),
+                  -c(cd4, cd8))
+womenV1 <- entelong %>% 
+  select(-c(cd4, cd8)) %>% 
+  mutate(log_nkiller = log(nkiller) ) %>% 
+  filter(sex == "Female", visit == 1, log_nkiller > 4)
+```
+
+Usa la funcio
 
