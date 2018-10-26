@@ -28,7 +28,7 @@ mR2 <- summary(lm(HDI ~ CPI + log(CPI), data = dat))$r.squared
 mR2 <- paste0(format(mR2, digits = 2), "%")
 
 p <- ggplot(dat,
-            mapping = aes(x = CPI, y = HDI)) +
+            mapping = aes(x = CPI, y = HDI)) + 
   geom_smooth(mapping = aes(linetype = "r2"),
               method = "lm",
               formula = y ~ x + log(x), se = FALSE,
@@ -40,7 +40,35 @@ p <- ggplot(dat,
   geom_text_repel(mapping = aes(label = Country, alpha = labels),
                   color = "gray20",
                   data = transform(dat,
-                                   labels = Country %in% pointsToLabel) +
+                                   labels = Country %in% c("Russia",
+                                                           "Venezuela",
+                                                           "Iraq",
+                                                           "Mayanmar",
+                                                           "Sudan",
+                                                           "Afghanistan",
+                                                           "Congo",
+                                                           "Greece",
+                                                           "Argentinia",
+                                                           "Italy",
+                                                           "Brazil",
+                                                           "India",
+                                                           "China",
+                                                           "South Africa",
+                                                           "Spain",
+                                                           "Cape Verde",
+                                                           "Bhutan",
+                                                           "Rwanda",
+                                                           "France",
+                                                           "Botswana",
+                                                           "France",
+                                                           "US",
+                                                           "Germany",
+                                                           "Britain",
+                                                           "Barbados",
+                                                           "Japan",
+                                                           "Norway",
+                                                           "New Zealand",
+                                                           "Sigapore"))) +
   scale_x_continuous(name = "Corruption Perception Index, 2011 (10=least corrupt)",
                      limits = c(1.0, 10.0),
                      breaks = 1:10) +
@@ -76,5 +104,6 @@ p <- ggplot(dat,
         legend.text = element_text(size = 12),
         plot.caption = element_text(hjust=0),
         plot.title = element_text(size = 16, face = "bold"))
+p
 ```
 

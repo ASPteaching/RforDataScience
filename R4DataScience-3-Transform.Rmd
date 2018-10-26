@@ -18,7 +18,7 @@ editor_options:
 ```{r  include=FALSE}
 require(knitr)
 opts_chunk$set(
-concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=4, size = "footnotesize")
+concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=TRUE, fig.height=4, size = "footnotesize")
 
 def.chunk.hook  <- knitr::knit_hooks$get("chunk")
 knitr::knit_hooks$set(chunk = function(x, options) {
@@ -35,9 +35,10 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 \vspace{2cm}
 
 - Data managements with dplyr
+- The pipe operator %>%
 - Merging datasets
 - Spreading and gathering
-- The pipe operator %>%
+
 
 \vspace{2.5cm}
 
@@ -53,7 +54,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 <!-- **Hmisc**: another large collection of tools for most aspects of data analysis, but we use it here for describe(), a dataset summary function -->
 
-```{r}
+```{r, message=FALSE}
 # install.packages("tidyverse", dependencies = TRUE)
 library(tidyverse)
 ```
@@ -83,7 +84,7 @@ The **dplyr** package is automatically loaded with **library(tidyverse)**.
 
 The dplyr function filter() provides a cleaner syntax for subsetting datasets. Conditions separated by , are joined by & (logical AND).
 
-```{r, size="footnotesize"}
+```{r, size="footnotesize", message=FALSE}
 require(readxl)
 diab <- read_excel("datasets/diabetes.xls")
 diab_filt <- filter(diab, tabac == "No fumador", edat >= 50)
@@ -225,7 +226,7 @@ Replicate the last exercice using 'pipes'
 ```{r, eval = F}
 df <- filter(diab,sbp > 160 | tabac == "Fumador")
 
-dfs <- select(df, edat,bmi,sbp,sbp)
+dfs <- select(df, tempsviu ,bmi,sbp,sbp)
 
 dfsa <- arrange(dfs, desc(tempsviu))
 
@@ -266,11 +267,14 @@ bind_rows(band_members, band_instruments)
 
 ##  Append columns bind_cols()
 
+!!!!!!!!!!
+
 ```{r}
 
 bind_cols(band_members, band_instruments)
 ```
 
+!!!!!!!!!!
 
 ## Merging datasets with dplyr joins
 
@@ -347,7 +351,7 @@ gather(key="year", value="grad", -id)
 
 ## Use gather() example
 
-```{r, size="tiny"}
+```{r, size="tiny", message=FALSE}
 dept <- read_csv("datasets/dept1.csv")
 dept_by_year <- dept %>% 
   gather(key = "year", value = "grad", -id)
@@ -361,7 +365,7 @@ Columns should contain values that represent one variable, but we often encounte
 
 Let's take a look at a dataset of worms, who have had their age, length, and weight measured, but all stored in one column.
 
-```{r, size="tiny"}
+```{r, size="tiny", message=F}
 worms <- read_csv("datasets/worms.csv")
 head(worms, n = 6)
 ```
@@ -387,9 +391,7 @@ by_worm
 1. Cread un tibble que contenga los datos de la primera visita de las voluntarias con log(nkiller) > 4. Las variables del tibble deben ser las de `entelong` excepto `cd4` y `cd8`. Realizar el ejercicio usando 'pipes' y sin ellos 
 
 ```{r, eval=FALSE, echo = FALSE}
-# load("DatosENTE.RData")
-# write.xlsx(ente, file = "datasets/ente.xls")
-# write.xlsx(entelong, file = "datasets/entelong.xls")
+read_excel("datasets/entelong.xls")
 comment(entelong)
 womenV1 <- select(filter(entelong, sex == "Female", visit == 1, log(nkiller) > 4),
                   -c(cd4, cd8))
@@ -402,8 +404,14 @@ womenV1 <- entelong %>%
 2. Usad la función spread para conseguir que los datos tengan este aspecto: 
 
 ```{r, size="tiny", echo=FALSE}
-load("datasets/DatosENTE.RData")
+
+ente <- entelong %>% 
+  gather(variable, value, -(vol:visit)) %>%
+  unite(temp, visit, variable) %>%
+  spread(temp, value)
 head(ente)
+
+
 ```
 
 
