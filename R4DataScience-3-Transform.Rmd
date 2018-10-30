@@ -404,14 +404,11 @@ womenV1 <- entelong %>%
 2. Usad la función spread para conseguir que los datos tengan este aspecto: 
 
 ```{r, size="tiny", echo=FALSE}
-
 ente <- entelong %>% 
   gather(variable, value, -(vol:visit)) %>%
   unite(temp, visit, variable) %>%
   spread(temp, value)
 head(ente)
-
-
 ```
 
 

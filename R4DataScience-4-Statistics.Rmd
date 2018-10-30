@@ -1,0 +1,551 @@
+---
+title: "R for Data Science (IV): Essential Statistics with R"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo & 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+    
+footer: "R for Data Science"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r  include=FALSE}
+require(knitr)
+opts_chunk$set(
+concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=TRUE, fig.height=4, size = "footnotesize")
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+```{r setLicense, child = 'license.Rmd', eval =F}
+```
+
+## Outline: Essential Statistics with R*
+
+\begin{itemize}
+  \item Descriptive Statistics
+  \begin{itemize}
+    \item Numerical summaries
+    \item Graphical exploration
+  \end{itemize}
+  \item Statistical test
+  \begin{itemize}
+    \item Continous variables
+    \item Discrete variables
+  \end{itemize}
+  \item BONUS: ANOVA and Linear Models
+\end{itemize}
+
+\vspace{1cm}
+
+\tiny *Based on this Course:* [*BIMS 8382, University of Virginia School of Medicine (USA)*] (https://bioconnector.github.io/workshops/index.html).
+
+## What this class is _not_
+
+- This is not a statistics course. Not covering:
+
+    + Underlying mathematical motivation
+    + How to choose the correct statistical procedure
+    + Model assumptions
+    + Interpreting every aspect of model output
+
+
+## What packages we will use today?
+Please be sure yo have the following packages installed:
+
+- **dplyr** - subsetting, sorting, transforming variables, grouping
+- **ggplot2** - system for creating graphics
+- **readxl** - reading .xls files
+
+```{r, message=FALSE}
+# install.packages("dplyr", dependencies = TRUE)
+# install.packages("ggplot2", dependencies = TRUE)
+# install.packages("readxl", dependencies = TRUE)
+
+library(dplyr)
+library(ggplot2)
+library(readxl)
+```
+
+
+## The Data Science Approach in R
+
+\begin{figure}
+  \includegraphics[width=.9\linewidth]{images/data-science.png}
+\end{figure}
+
+
+# Getting started
+
+## Getting started (I)
+
+
+1. Load dataset: today we will continue working with \emph{diabetes} dataset:
+
+```{r, size="footnotesize", message=FALSE}
+diab <- read_excel("datasets/diabetes_mod.xls")
+```
+
+2. Check if we have loaded it correctly:
+
+```{r, size="tiny"}
+diab[1:4, 1:8]
+```
+
+
+## Getting started (II)
+
+Some useful functions in `R` to check a dataframe:
+
+  - Content
+  
+              
+        - head(name of dataframe): shows the first few rows
+        - tail(): shows the last few rows
+  - Size
+  
+  
+        - dim(): returns the number of rows and the number of columns
+        - nrow(): returns the number of rows
+        - ncol(): returns the number of columns
+        
+  - Summary
+  
+  
+        - colnames() or names(): returns the column names
+        - glimpse(): returns a glimpse of your data, telling 
+                     you structure, class, length and content 
+                     of each column
+
+## Getting started (III)
+
+```{r size="tiny"}
+head(diab)
+```
+
+## Getting started (IV)
+```{r}
+dim(diab)
+nrow(diab)
+colnames(diab)
+```
+
+## Getting started (IV)
+```{r size="tiny"}
+glimpse(diab)
+```
+
+## Changing _characters (chr)_ to _factors (Factor)_
+Use dplyr function `mutate_if` can do it easily:
+
+```{r size="tiny"}
+diab <- diab %>% mutate_if(is.character, as.factor)
+
+glimpse(diab)
+```
+
+## Check the levels of a factor
+
+Usually when humans fill the database...a plenty of errors are encountered :(
+
+    - An answer like "SI", could be entered like: 
+          "SI", "Si", "si", "SI ", "SÍ", .....
+    
+All this possible answers **will be differents levels for the same variable**
+
+## How to correct it? 
+
+We can use: `recode_factor`:
+
+```{r}
+diab$mort <- recode_factor(diab$mort, "Muerto" = "muerto")
+levels(diab$mort)
+```
+
+Return to the original version:
+```{r}
+diab$mort <- recode_factor(diab$mort, "muerto" = "Muerto")
+levels(diab$mort)
+```
+
+# Descriptive Statistics: Numerical summaries
+
+## Numerical Summaries (I)
+
+We can access individual variables within a data frame using the `$` operator. Let's print out all the _edat_ values in the data. Let's then see what are `unique` values of each. Then let's calculate the <b><code> mean </code></b> , `median` and `range` for the _edad_ variable:
+```{r size="tiny"}
+#display all the values
+diab$edat
+```
+
+## Numerical Summaries (II)
+
+```{r size="tiny"}
+# Get the unique values of edat
+diab$edat %>% unique()
+diab$edat %>% unique() %>% length()
+```
+
+## Numerical Summaries (III)
+```{r size="tiny"}
+#Mean, median and rang
+mean(diab$edat)
+median(diab$edat)
+sd(diab$edat)
+var(diab$edat)
+range(diab$edat)
+```
+
+## Numerical Summaries (IV)
+If we want to group the descriptive summaries by other variables we can use `group_by` function:
+```{r size="tiny"}
+diab %>% 
+  group_by(tabac, ecg) %>%
+  summarize(mean(edat))
+```
+
+## Numerical Summaries (V)
+
+A general summary of all variables:
+```{r size="tiny"}
+summary(diab[, 2:11])
+```
+
+## Numerical Summaries (VI)
+
+What happens if we have missing data in our dataset?
+```{r size="tiny"}
+mean(diab$sbp)
+```
+
+**NA** indicates _missing data_ in the variable
+
+Let's look the `sbp` variable:
+```{r size="tiny"}
+diab$sbp
+```
+
+## Numerical Summaries (VII)
+How to work with _missing data_:
+```{r size="tiny"}
+?mean
+mean(diab$sbp, na.rm = TRUE)
+is.na(diab$sbp)
+```
+
+## Numerical Summaries (VIII)
+How to work with _missing data_:
+```{r}
+sum(is.na(diab$sbp))
+sum(is.na(diab$dbp))
+```
+
+## EXERCISE
+
+1. With the `diab` dataset
+
+  - Show only the rows from 35 to 98 and columns 5, 7, and from 9 to 11
+    
+  - Change the level of the variable _tabac_, from **No Fumador** to **No_Fumador**
+    
+  - Display the unique values for the variable _bmi_. Count how many exist.
+    
+  - Display the mean of _edatdiag_, grouped by _ecg_
+
+
+# Descriptive Statistics: Graphical summaries
+
+## Exploratory Data Analysis (EDA)
+We could dedicate half of the course only to EDA. Here we will only see the most common approaches to visualize data:
+
+    - Histograms
+    - Scatterplots
+    - Boxplots
+
+
+## Histograms
+We will use histograms to plot the frequencies of each level of variables. This is the way to see the data distribution of particulars variables.
+```{r}
+ggplot(diab, aes(edat)) + 
+  geom_histogram(bins = 30)
+```
+
+
+## Histograms (II)
+```{r}
+ggplot(diab, aes(dbp)) + 
+  geom_histogram(bins = 30)
+```
+
+## Scatterplots. Two continous variables
+
+This is the graphical way to check the relation between two variables:
+
+```{r}
+ggplot(diab, aes(tempsviu, sbp, col = ecg)) + 
+  geom_point()
+```
+
+## Scatterplots (II)
+
+```{r eval=FALSE}
+ggplot(diab, aes(tempsviu, sbp, col = ecg)) + 
+  geom_point(size = 4, pch = 17) +
+  geom_smooth(lwd=2, se=FALSE, method="lm", col="red")
+```
+
+## Scatterplots (II)
+
+```{r echo=FALSE}
+ggplot(diab, aes(tempsviu, sbp, col = ecg)) + 
+  geom_point(size = 4, pch = 17) +
+  geom_smooth(lwd=2, se=FALSE, method="lm", col="red")
+```
+
+## Faceting
+```{r eval=FALSE}
+ggplot(diab, aes(tempsviu, sbp, col = ecg)) +
+  geom_point(size = 4, pch = 17) +
+  geom_smooth(lwd = 2, se=FALSE, method="lm", col="red") +
+  facet_wrap(~ ecg, ncol = 1)
+```
+
+## Faceting
+```{r echo=FALSE, fig.height=6}
+ggplot(diab, aes(tempsviu, sbp, col = ecg)) +
+  geom_point(size = 4, pch = 17) +
+  geom_smooth(lwd = 2, se=FALSE, method="lm", col="red") +
+  facet_wrap(~ ecg, ncol = 1)
+```
+
+## Boxplot. Continous versus categorical
+```{r}
+ggplot(diab, aes(tabac, edat)) + 
+  geom_boxplot()
+```
+
+
+## Boxplot (II)
+```{r}
+ggplot(diab, aes(x= reorder(tabac, edat), y = edat)) + 
+  geom_boxplot()
+```
+
+## EXERCISE
+
+2. With the `diab` dataset
+
+  - Use the best graphic type to plot the relation between _sbp_ and _dbp_
+    
+  - Show graphically the relation between _edat_ and _ecg_
+    
+  - Plot the _sbp_ frequencies
+    
+  - Improve the first graphic (add linear regression, avoid strange data in dbp, ...)
+
+```{r eval=FALSE, echo=FALSE}
+diab %>%
+ filter(dbp < 500) %>%
+ ggplot(aes(sbp, dbp)) +
+ geom_point(size = 4, pch = 17, col = "blue") +
+ geom_smooth(lwd = 2, se=FALSE, method="lm", col="red")
+```
+
+
+# Statistics test. Continuos Variables
+
+## Two-sample t-test
+
+  * Two-sample t-test will assess the differences in means between two groups
+  
+  * The function for a t-test is t.test()
+  
+  * The usage is t.test(response~group, data=myDataFrame)
+  
+## Recode levels of _tabac_ variable
+
+Let's recode the levels of the variable to gain more opportunities of ``playing'' with the dataset
+```{r}
+levels(diab$tabac)
+
+diab$tabac <- recode_factor(diab$tabac, "Ex fumador" = "Fumador")
+
+levels(diab$tabac)
+```
+
+
+## Two-sample t-test (II)
+Are there differences in coronary heart disease (_chd_) depending of body mass index (_bmi_) in this dataset?
+
+## Two-sample t-test (II)
+
+```{r}
+t.test(bmi ~ chd, data = diab)
+```
+
+## Two-sample t-test (III)
+Are there differences in  _chd_ depending of _tabac_ in this dataset?
+
+## Two-sample t-test (III)
+
+```{r}
+t.test(edat ~ tabac, data = diab)
+```
+
+
+## Wilcoxon rank-sum test (a.k.a. Mann-Whitney _U_ test)
+
+When the continous variable i not uniformly distributed. 
+
+```{r}
+ggplot(diab, aes(tempsviu)) + 
+  geom_histogram(bins = 30)
+```
+
+## Wilcoxon rank-sum test (a.k.a. Mann-Whitney _U_ test) II
+
+```{r}
+wilcox.test(tempsviu ~ chd, data = diab)
+```
+
+# Statistics test. Discrete Variables
+
+## Contingency tables
+
+```{r}
+xtabs(~ chd + tabac, data = diab)
+
+addmargins(xtabs(~ chd + tabac, data = diab))
+```
+
+## Chi-square test
+Chi-square test is used top assess the independence of these two factors. That is, if the null hypothesis that smoking habits and coronary heart disease history are independent is true, then we would expect a proportionally equal number of smokers across each coronary heart disease history level. Smokers seem to be slightly higher risk than non-smokers, but the difference is just short of statistically significant.
+
+## Chi-square test
+
+```{r}
+chisq.test(xtabs(~ chd + tabac, data = diab))
+```
+
+## Fisher’s exact test
+Useful when n < 5 in some of the groups.
+```{r}
+fisher.test(xtabs(~ chd + tabac, data = diab))
+```
+
+## Plot the results
+Mosaic plot is a useful way to visualize contingency table data
+
+```{r}
+mosaicplot(xtabs(~ chd + tabac, data = diab))
+```
+
+## EXERCISE
+
+3. With the `diab` dataset
+
+  - Are there any differences in _sbp_ values between _chd_ groups
+    
+  - Show graphically the relation between _sbp_ and _chd_
+    
+  - Create a contingency table between _mort_ and _tabac_. Plot the table
+    
+  - Test if smoking habits is related with _mort_ variable.
+
+```{r eval=FALSE, echo=FALSE}
+xtabs(~ mort + tabac, data = diab)
+mosaicplot(xtabs(~ mort + tabac, data = diab))
+chisq.test(xtabs(~ mort + tabac, data = diab))
+```
+
+# Bonus: ANOVA and Linear Regression
+
+## ANOVA
+Remember that t-tests are for assessing the differences in means between two groups. A t-test is a specific case of ANOVA, which is a specific case of a linear model.
+
+```{r eval=FALSE}
+t.test(edat ~ ecg, data = diab)
+
+Error in t.test.formula(edat ~ ecg, data = diab) : 
+  grouping factor must have exactly 2 levels
+```
+
+## ANOVA (II)
+
+Let's look the relationship between _edat_ and _ecg_ with ANOVA:
+```{r}
+fit <- lm(edat ~ ecg, data = diab)
+anova(fit)
+```
+
+## ANOVA (II)
+ANOVA only says if there exists differences among the levels (in general), but does not say anything about differences within the levels. We have to draw on **Tukey’s test**
+```{r size="tiny"}
+TukeyHSD(aov(fit))
+```
+
+## ANOVA (III)
+It is very useful to plot the comparison
+```{r}
+ggplot(diab, aes(ecg, edat)) + 
+  geom_boxplot()
+```
+
+## Linear Models
+Linear model seeks to explain the relationship between a variable of interest, our Y, outcome, response, or dependent variable, and one or more X, predictor, or independent variables. 
+
+        Y = beta0 + beta1·X + error
+        
+   where
+   
+        Y is the response
+        X is the predictor variable
+        beta0 is the intercept
+        beta1 is the coefficient
+        error is the random error
+
+## Linear Models (II)
+Let's look the relationship between _sbp_ and _dbp_
+```{r size="tiny"}
+fit <- lm(edat ~ sbp, data = diab)
+summary(fit)
+```
+
+## Linear Models (III)
+Let's plot the relationship
+```{r eval=FALSE}
+ggplot(diab, aes(sbp, edat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Linear Models (III)
+
+```{r echo=FALSE, fig.height=6}
+ggplot(diab, aes(sbp, edat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+      
+# Your turn
+
+
+
+## EXERCISE
+ 
+
+4. Using the _osteoporosis.csv_ dataset
+
+
+
