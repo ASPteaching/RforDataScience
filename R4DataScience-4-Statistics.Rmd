@@ -40,7 +40,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
   \end{itemize}
   \item Statistical test
   \begin{itemize}
-    \item Continous variables
+    \item Continuous variables
     \item Discrete variables
   \end{itemize}
   \item BONUS: ANOVA and Linear Models
@@ -61,9 +61,9 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 
 ## What packages we will use today?
-Please be sure yo have the following packages installed:
+Please be sure you have the following packages installed:
 
-- **dplyr** - subsetting, sorting, transforming variables, grouping
+- **dplyr** - subletting, sorting, transforming variables, grouping
 - **ggplot2** - system for creating graphics
 - **readxl** - reading .xls files
 
@@ -156,7 +156,7 @@ glimpse(diab)
 
 ## Check the levels of a factor
 
-Usually when humans fill the database...a plenty of errors are encountered :(
+Usually when humans fill the database...a plenty of errors could be found :(
 
     - An answer like "SI", could be entered like: 
           "SI", "Si", "si", "SI ", "SÍ", .....
@@ -287,7 +287,7 @@ ggplot(diab, aes(dbp)) +
   geom_histogram(bins = 30)
 ```
 
-## Scatterplots. Two continous variables
+## Scatterplots. Two Continuous variables
 
 This is the graphical way to check the relation between two variables:
 
@@ -328,7 +328,7 @@ ggplot(diab, aes(tempsviu, sbp, col = ecg)) +
   facet_wrap(~ ecg, ncol = 1)
 ```
 
-## Boxplot. Continous versus categorical
+## Boxplot. Continuous versus categorical
 ```{r}
 ggplot(diab, aes(tabac, edat)) + 
   geom_boxplot()
@@ -362,7 +362,7 @@ diab %>%
 ```
 
 
-# Statistics test. Continuos Variables
+# Statistics test. Continuous Variables
 
 ## Two-sample t-test
 
@@ -394,7 +394,7 @@ t.test(bmi ~ chd, data = diab)
 ```
 
 ## Two-sample t-test (III)
-Are there differences in  _chd_ depending of _tabac_ in this dataset?
+Are there differences in  _edat_ depending of _tabac_ in this dataset?
 
 ## Two-sample t-test (III)
 
@@ -405,7 +405,7 @@ t.test(edat ~ tabac, data = diab)
 
 ## Wilcoxon rank-sum test (a.k.a. Mann-Whitney _U_ test)
 
-When the continous variable i not uniformly distributed. 
+When the Continuous variable has not a normal distribution 
 
 ```{r}
 ggplot(diab, aes(tempsviu)) + 
@@ -495,7 +495,7 @@ TukeyHSD(aov(fit))
 ```
 
 ## ANOVA (III)
-It is very useful to plot the comparison
+It is very useful to plot the two variables
 ```{r}
 ggplot(diab, aes(ecg, edat)) + 
   geom_boxplot()
@@ -547,5 +547,13 @@ ggplot(diab, aes(sbp, edat)) +
 
 4. Using the _osteoporosis.csv_ dataset
 
+    - Load the dataset and check if it is correctly loaded
+    - Calculate the mean and standard deviation of imc grouped by clasific
+    - Plot the distribution of edat
+    - Plot the relationship between talla and peso
+    - Compute the model between talla and peso. Add the linear regression to previous plot
+    - Is bua values different between levels of menop?
+    - Is imc values different among levels of grupedad? Between which levels?
+    - Build a contingency table between clasific and grupedad. Check if there is independence between the levels of clasific and grupedad.
 
 
