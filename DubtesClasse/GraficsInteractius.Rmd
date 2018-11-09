@@ -1,0 +1,92 @@
+---
+title: 'Dubtes classe: gràfics interactius'
+author: "Miriam Mota"
+date: "November 8, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F)
+```
+
+# Interactius per a markdown
+
+https://rstudio.github.io/dygraphs/gallery-custom-plotters.html
+
+
+### Paquet giraph amb ggplot2
+
+```{r}
+# install.packages("ggiraph")
+# install.packages("ggplot2")
+
+require("ggiraph")
+require("ggplot2")
+
+data("mpg")
+g <- ggplot(mpg, aes( x = displ, y = cty, color = hwy) )
+my_gg <- g + geom_point_interactive(aes(tooltip = model), size = 2)
+ggiraph(code = print(my_gg) )
+
+```
+
+
+
+### Paquet plotly amb gpplot2
+```{r}
+# install.packages("plotly") # if you haven't installed the package
+library(plotly)
+library(datasets)
+
+
+p <- ggplot(data = mpg, aes(x = displ, y = cty)) +
+  geom_point()
+
+ggplotly(p) 
+
+```
+
+#### Aplicació online de plotly
+
+https://plot.ly/create/?fid=ouzor:33#/
+
+
+
+
+
+
+
+### Paquet dygraphs
+
+```{r}
+# install.packages("dygraphs", dependencies = T)
+require("dygraphs")
+
+lungDeaths <- cbind(ldeaths, mdeaths, fdeaths)
+dygraph(lungDeaths, main = "Deaths from Lung Disease (UK)") %>%
+  dyHighlight(highlightCircleSize = 5, 
+              highlightSeriesBackgroundAlpha = 0.2,
+              hideOnMouseOut = FALSE)
+
+```
+
+
+
+
+
+
+# Interactius "nova finestra"
+
+
+
+### Paquet iplot
+http://rosuda.org/software/iPlots/
+
+```{r, eval = FALSE}
+install.packages("iplots",dep=TRUE)
+require(iplots)
+ihist(iris$Sepal.Length)
+```
+

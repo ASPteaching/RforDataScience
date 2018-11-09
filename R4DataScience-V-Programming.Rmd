@@ -1,0 +1,183 @@
+---
+title: "R for Data Science (V): Programming"
+author: "Alex Sanchez, Miriam Mota, Ricardo Gonzalo and 
+        Mireia Ferrer"
+date: "Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+footer: "R for Data Science"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r  include=FALSE}
+require(knitr)
+opts_chunk$set(
+concordance=FALSE, echo=TRUE, cache=FALSE, warning=FALSE, error=FALSE, message=TRUE, fig.height=4, size = "footnotesize")
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+```{r setLicense, child = 'license.Rmd', eval =F}
+```
+
+## Outline: Introduction to programming
+
+\vspace{2cm}
+
+- Introduction
+- Control structures
+- The `apply` family
+- User defined functions
+
+
+\vspace{2.5cm}
+
+\tiny *Based on this presentation: **Programacion en R** by *Antonio Miñarro* Universitat de Barcelona.
+
+## Introduction
+
+- We have introduced R  as a *a language (a tool), to manage and analyze data*.
+- It is also a *programming language*
+    + It is simple and versatile
+    + The user can create new functions that adapt to their
+needs
+    + It is widely used (2nd most widely used in Data Science)
+    + Users provide the community with a high variety of solutions
+     + As a programming language it is not, however, very efficient
+    
+## Example 1: Why may we need programming
+
+- Assume we have the diabetes dataset and want to make a summary of every variable it contains.
+
+```{r, eval=FALSE}
+    library(readxl)
+    diabetes <- read_excel("datasets/diabetes.xls")
+    summary(diabetes)
+```
+ 
+ - There are categorical variables but the system cannot recognnize them.
+ 
+---
+
+```{r, echo=FALSE}
+    library(readxl)
+    diabetes <- read_excel("datasets/diabetes.xls")
+    summary(diabetes)
+```
+---
+
+- A simple solution: Convert text variables into factors.
+```{r}
+    library(forcats)
+    diabetes$mort <- as_factor(diabetes$mort)
+    diabetes$tabac <- as_factor(diabetes$mort)
+    diabetes$ecg <- as_factor(diabetes$ecg)
+    diabetes$chd <- as_factor(diabetes$chd)
+```
+---
+\tiny
+```{r}
+    summary(diabetes)
+```
+\normalsize
+
+---
+
+- But how shoulde we proceed if there were dozens or hundreds of variables that need to be changed?
+- What if, besides, these variables had different names at every new file?
+
+- The solution consists of providing some way to indicate that "any" character variable is transformed into a factor.
+- This will be  an example of a "program",
+
+
+# Changing the flow of execution
+
+## Scripts are executed "lineally"
+
+- R, as most ordinary programming languages, is executed lineally, that is from the first to last line.
+- Sometimes this needs to be changed.
+    + Taking alternative flows according to certain conditions
+    + Repeating some instructions while certain condition holds, or a fixed number of times,...
+    
+- This can be acomplished using *Flow control structures*
+
+## Loop controlled by a counter: `for` instruction
+
+- Loops are used in programming to repeat a specific block of code made by one or more instructions.
+- Syntax of for loops:
+
+```{r eval=FALSE}
+    for (val in sequence)
+    {
+    statement
+    }
+```
+
+- Here, `sequence` is a vector and `val` takes on each of its value during the loop. In each iteration, `statement` is evaluated.
+
+## Example of `for` loop
+
+- A `for` loop can be used to change the selected columns in the diabetes dataset.
+
+```{r}
+    diabetes <- data.frame(read_excel("datasets/diabetes.xls"))
+are_char <- c(2,7,10,11)
+    for (i in are_char) {
+      diabetes[,i]<-as_factor(diabetes[,i])
+    cat(colnames(diabetes)[i], class(diabetes[,i]), "\n")
+    }
+```
+---
+
+```{r}
+summary(diabetes)
+```
+
+## Exercise
+
+- Create a `for` loop that reads all .csv filenames in your datasets directory (or the directory you decide) and prints the name of the file and the column names in the screen.
+
+## Conditional statements: `if` / `if - else`.
+
+- Conditional statements allow different coding blocks to be executed depending on whether a certain condition is TRUE or FALSE.
+
+- syntax of `if` statement is:
+
+```{r eval=FALSE}
+    if (test_expression) {
+        statement
+      }
+```
+
+
+- If the `test_expression` is TRUE, the `statement` gets executed. But if it's FALSE, nothing happens.
+- Here, `test_expression` can be a logical or numeric vector, but only the first element is taken into consideration.
+- In the case of numeric vector, zero is taken as FALSE, rest as TRUE.
+
+
+## Conditional statements: `if - else`.
+
+- syntax of `if-else` statement is:
+
+```{r eval=FALSE}
+    if (test_expression) {
+        statement_1
+    }else{
+        statement_2
+      }
+```
+
+- If the `test_expression` is TRUE, then `statement_1` gets executed. 
+- If it's FALSE then `statement_2` gets executed. 
+
+## Exercise
+
